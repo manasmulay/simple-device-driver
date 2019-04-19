@@ -12,14 +12,20 @@ void print_proc_info(void){
 	size_t tasks_running = 0;
 	size_t percentage; 
 	for_each_process(task_list) {
-		pr_info("PID [%d] running, Parent PID [%d], State : %ld\n",task_list->pid, task_list->parent->pid, task_list->state);
                 ++process_counter;
                 if(task_list->state == 0x0000)
-			tasks_running += 1;
+				{
+					pr_info("PID [%d] running, Parent PID [%d], State : TASK_RUNNING\n",task_list->pid, task_list->parent->pid);
+					tasks_running += 1;
+				}
+				else
+				{
+					pr_info("PID [%d] running, Parent PID [%d], State : TASK_INTERRUPTIBLE\n",task_list->pid, task_list->parent->pid);
+				}
         }
 	percentage = tasks_running*100;
 	percentage /= process_counter;
-	printk(KERN_INFO "TASK_RUNNING = %zu", percentage);
+	printk(KERN_INFO "TASK_RUNNING percent = %lu\n", percentage);
 }
 
 static int hello_init(void){
