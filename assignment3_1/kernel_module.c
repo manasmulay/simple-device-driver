@@ -10,18 +10,74 @@ void print_proc_info(void){
 	struct task_struct* task_list;
         size_t process_counter = 0;
 	size_t tasks_running = 0;
-	size_t percentage; 
+	size_t percentage;
+	size_t task_state; 
 	for_each_process(task_list) {
                 ++process_counter;
-                if(task_list->state == 0x0000)
+                task_state = task_list->state;
+                if(task_state == TASK_RUNNING)
 				{
-					pr_info("PID [%d] running, Parent PID [%d], State : TASK_RUNNING\n",task_list->pid, task_list->parent->pid);
+					pr_info("PID [%d] running, Parent PID [%d], State : TASK_RUNNING\n",task_list->pid, task_list->parent->pid), task_list->state;
 					tasks_running += 1;
 				}
-				else
+				else if(task_state == TASK_INTERRUPTIBLE)
 				{
 					pr_info("PID [%d] running, Parent PID [%d], State : TASK_INTERRUPTIBLE\n",task_list->pid, task_list->parent->pid);
 				}
+				else if(task_state == TASK_UNINTERRUPTIBLE)
+				{
+					pr_info("PID [%d] running, Parent PID [%d], State : TASK_UNINTERRUPTIBLE\n",task_list->pid, task_list->parent->pid);
+				}
+				else if(task_state == __TASK_STOPPED)
+				{
+					pr_info("PID [%d] running, Parent PID [%d], State : __TASK_STOPPED\n",task_list->pid, task_list->parent->pid);
+				}
+				else if(task_state == __TASK_TRACED)
+				{
+					pr_info("PID [%d] running, Parent PID [%d], State : __TASK_TRACED\n",task_list->pid, task_list->parent->pid);
+				}
+				else if(task_state == TASK_PARKED)
+				{
+					pr_info("PID [%d] running, Parent PID [%d], State : TASK_PARKED\n",task_list->pid, task_list->parent->pid);
+				}
+				else if(task_state == TASK_DEAD)
+				{
+					pr_info("PID [%d] running, Parent PID [%d], State : TASK_DEAD\n",task_list->pid, task_list->parent->pid);
+				}
+				else if(task_state == TASK_WAKEKILL)
+				{
+					pr_info("PID [%d] running, Parent PID [%d], State : TASK_WAKEKILL\n",task_list->pid, task_list->parent->pid);
+				}
+				else if(task_state == TASK_WAKING)
+				{
+					pr_info("PID [%d] running, Parent PID [%d], State : TASK_WAKING\n",task_list->pid, task_list->parent->pid);
+				}
+				else if(task_state == TASK_NOLOAD)
+				{
+					pr_info("PID [%d] running, Parent PID [%d], State : TASK_NOLOAD\n",task_list->pid, task_list->parent->pid);
+				}
+				else if(task_state == TASK_NEW)
+				{
+					pr_info("PID [%d] running, Parent PID [%d], State : TASK_NEW\n",task_list->pid, task_list->parent->pid);
+				}
+				else if(task_state == TASK_STATE_MAX)
+				{
+					pr_info("PID [%d] running, Parent PID [%d], State : TASK_STATE_MAX\n",task_list->pid, task_list->parent->pid);
+				}
+				else if(task_state == TASK_IDLE)
+				{
+					pr_info("PID [%d] running, Parent PID [%d], State : TASK_KILLABLE\n",task_list->pid, task_list->parent->pid);
+				}
+				else if(task_state == TASK_IDLE)
+				{
+					pr_info("PID [%d] running, Parent PID [%d], State : TASK_IDLE\n",task_list->pid, task_list->parent->pid);
+				}
+				else
+				{
+					pr_info("PID [%d] running, Parent PID [%d], State : %zu\n",task_list->pid, task_list->parent->pid, task_list->state);
+				}
+
+
         }
 	percentage = tasks_running*100;
 	percentage /= process_counter;
