@@ -84,15 +84,15 @@ void print_proc_info(void){
 	printk(KERN_INFO "TASK_RUNNING percent = %lu\n", percentage);
 }
 
-static int hello_init(void){
+static int print_proc_info_init(void){
 	printk(KERN_ALERT "Init\n");
 	print_proc_info();
 	return 0;
 }
 
-static void hello_exit(void){
+static void print_proc_info_exit(void){
 	printk(KERN_ALERT "Exit\n");
 }
 
-module_init(hello_init);
-module_exit(hello_exit);
+module_init(print_proc_info_init);
+module_exit(print_proc_info_exit);
