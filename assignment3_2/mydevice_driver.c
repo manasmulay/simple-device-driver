@@ -43,27 +43,27 @@ int mydev_open (struct inode *inodep, struct file *fileptr){
 }
 
 ssize_t mydev_read(struct file *fileptr, char *user_buff, size_t len, loff_t *off){
-	ssize_t count = 0;
-	while(dev_buf[count] != '\0')
+	short count = 0;
+	short readPos = 0;
+	while(len && dev_buf[readPos] != 0)
 	{
-		put_user(dev_buf[count], user_buff++);
+		put_user(dev_buf[readPos], user_buff++);
 		count++;
+		readPos++;
+		len--;
 	}
-	put_user(dev_buf[++count], user_buff++);
 	return count;
 }
 
 ssize_t mydev_write(struct file *fileptr, const char *user_buff, size_t len, loff_t *off){
-	ssize_t count = 0;
-	size_t written = len - 1;
-	memset(dev_buf, 0, 100);
-	while(written >= 0){
-		dev_buf[written] = user_buff[count];
-		count++;
-		written--;
+	short ind = len - 1;
+	short count = 0;
+	memset(dev_buf,0,100);
+	while(len > 0)
+	{
+		dev_buf[count++] = user_buff[ind--];
+		len--;
 	}
-	// dev_buf[len] = "\0";
-	printk(KERN_INFO "%s\n", dev_buf);
 	return count;
 }
 
