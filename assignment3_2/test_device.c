@@ -3,17 +3,20 @@
 #include <unistd.h>
 #include <sys/types.h>
 #include <fcntl.h>
+#include <assert.h>
 
 int main(int argc, char const *argv[])
 {
-	char buf[50];
+	// assert(argc > 1);
+	char buf[50] = "abcd";
 	int i = 0;
-	memset(buf,50,0);
-	scanf("%s", buf);
-	printf("%s\n", buf);
 	int fp = open("/dev/mydevice_driver", O_RDWR);
-	write(fp, buf, strlen(buf));
-	read(fp, &buf, sizeof(buf) );
 	printf("%s\n", buf);
+	write(fp, &buf, strlen(buf));
+	int x = 5;
+	memset(buf,0,50);
+	read(fp, &buf, 50);
+	printf("%s\n", buf);
+	close(fp);
 	return 0;
 }
